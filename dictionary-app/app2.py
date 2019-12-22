@@ -21,11 +21,23 @@ results = cursor.fetchall()
 query = cursor.execute("select Expression from Dictionary")
 resultsExpressions = cursor.fetchall()
 
+possibilities = [i for r in resultsExpressions for i in r]
+
 if results:
     for result in results:
         print (result[1])
-elif len(get_close_matches(word, [i for r in resultsExpressions for i in r])) > 0:
-    closestMatch = get_close_matches(word, [i for r in resultsExpressions for i in r])[0]
+elif word.title() in possibilities:
+    query = cursor.execute("select Definition from Dictionary where Expression = '{}'".format(word.title()))
+    response = cursor.fetchall()
+    for res in response:
+        print (res[0])
+elif word.upper() in possibilities:
+    query = cursor.execute("select Definition from Dictionary where Expression = '{}'".format(word.upper()))
+    response = cursor.fetchall()
+    for res in response:
+        print (res[0])
+elif len(get_close_matches(word, possibilities)) > 0:
+    closestMatch = get_close_matches(word, possibilities)[0]
     response = input("Did you mean {} instead? Enter Y if yes, or N if no. : ".format(closestMatch))
     if response.lower() == "y":
         query = cursor.execute("select Definition from Dictionary where Expression = '{}'".format(closestMatch))
