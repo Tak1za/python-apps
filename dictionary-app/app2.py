@@ -3,12 +3,13 @@
 import difflib
 from difflib import get_close_matches
 import mysql.connector
+import config
 
 con = mysql.connector.connect(
-    user = "ardit700_student",
-    password = "ardit700_student",
-    host = "108.167.140.122",
-    database = "ardit700_pm1database"
+    user = config.user,
+    password = config.password,
+    host = config.host,
+    database = config.database
 )
 
 cursor = con.cursor()
